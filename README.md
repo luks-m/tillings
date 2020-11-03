@@ -14,4 +14,8 @@
 
 ceci est un test
 
+<<<<<<< HEAD
 troisième test
+=======
+deuxième test
+>>>>>>> refs/remotes/origin/master
