@@ -11,3 +11,5 @@
 - Lien vers la documentation sur l'utilisation de git :
 
 	<https://thor.enseirb-matmeca.fr/ruby/docs/repository/git>
+
+ceci est un test
