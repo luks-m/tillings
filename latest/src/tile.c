@@ -6,7 +6,7 @@ struct tile {
   struct color* colored_tile[4];
 };
 
-#define MAX_DECK_SIZE 100
+#define MAX_DECK_SIZE 20
 
 struct deck_pair {
   const struct tile* t;
@@ -47,30 +47,48 @@ struct color* tile_edge(const struct tile* t, enum direction d)
 }
 
 
+struct color* red_p = color_from_name("rouge");
+struct color* blue_p = color_from_name("bleu");
+struct color* green_p = color_from_name("vert");
+
+struct tile tiles[MAX_DECK_SIZE] = {
+									{red_p, red_p, red_p, red_p},
+									{blue_p, blue_p, blue_p, blue_p},
+									{green_p, green_p, green_p, green_p},
+									{green_p, green_p, red_p, red_p},
+									{blue_p, blue_p, red_p, red_p},
+									{green_p, green_p, blue_p, blue_p},
+									{red_p, green_p, green_p, red_p},
+									{blue_p, red_p, red_p, blue_p},
+									{green_p, blue_p, blue_p, green_p},
+									{blue_p, green_p, red_p, green_p},
+									{red_p, blue_p, green_p, blue_p},
+									{green_p, red_p, blue_p, red_p},
+									{green_p, blue_p, red_p, red_p},
+									{red_p, green_p, blue_p, blue_p},
+									{blue_p, red_p, green_p, green_p},
+									{red_p, blue_p, blue_p, blue_p},
+									{red_p, green_p, green_p, green_p},
+									{green_p, red_p, red_p, red_p},
+									{green_p, blue_p, blue_p, blue_p},
+									{blue_p, red_p, red_p, red_p}
+};
+
+int tile_number[MAX_DECK_SIZE] = {
+								  100, 100, 100, 100, 100,
+								  100, 100, 100, 100, 100,
+								  100, 100, 100, 100, 100,
+								  100, 100, 100, 100, 100, 								  
+};
 
 // A function that fills a deck with tiles
 // The contents of the deck `d` after the call must always be the same.
 void deck_init(struct deck* d)
 {
-	struct tile t1 ={{&red, &red, &red, &red}};
-	struct tile t2 ={{&blue, &blue, &blue, &blue}};
-	struct tile t3 ={{}};
-	struct tile t4 ={};
-	struct tile t5 ={};
-	struct tile t6 ={};
-	struct tile t7 ={};
-	struct tile t8 ={};
-	struct tile t9 ={};
-	struct tile t10 ={};
-	struct tile t11 ={};
-	struct tile t12 ={};
-	struct tile t13 ={};
-	struct tile t14 ={};
-	struct tile t15 ={};
-	struct tile t16 ={};
-	struct tile t17 ={};
-	struct tile t18 ={};
-	struct tile t19 ={};
-	struct tile t20 ={};
+	for (int i = 0 ; i < MAX_DECK_SIZE ; ++i){
+		d->cards[i].t = tiles[i];
+		d->cards[i].n = tile_number[i];
+		d->size += tile_number[i];
+	}
 }
 
