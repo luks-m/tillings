@@ -1,3 +1,4 @@
+#include <stdio.h>
 #include "color.h"
 
 enum direction { NORTH, SOUTH, EAST, WEST,
@@ -22,7 +23,7 @@ struct deck {
 // A tile that is empty
 const struct tile* empty_tile()
 {
-  return NULL
+	return NULL;
 }
 
 // A predicate telling if the tile is empty : return 1 if the tile is empty and 0 otherwise
@@ -34,7 +35,11 @@ int tile_is_empty(const struct tile* t)
 // A comparator between tiles
 int tile_equals(const struct tile* t1, const struct tile* t2)
 {
-  
+	for (int i = 0 ; i < 4 ; ++i){
+		if (t1->colored_tile[i] != t2 ->colored_tile[i])
+			return 0;		
+	}
+	return 1;
 }
 
 // Accessors to the color of the edges
