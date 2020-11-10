@@ -1,14 +1,14 @@
-CFLAGS = -std=c99 -Wall -Wextra
+CFLAGS = -std=c99 -Wall
 
 all: project
 
-src/color.o: src/color.c
+color.o: src/color.c
 	cc -c $(CFLAGS) -o src/color.o src/color.c
 
-src/tile.o: src/tile.c src/color.h
+tile.o: src/tile.c src/color.h
 	cc -c $(CFLAGS) -o src/tile.o src/tile.c
 
-src/projet.o: src/project.c src/tile.h src/color.h
+projet.o: src/project.c src/tile.h src/color.h
 	cc -c $(CFLAGS) -o src/project.o src/project.c
 
 project: src/project.o src/color.o src/tile.o
