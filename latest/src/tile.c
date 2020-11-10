@@ -46,6 +46,8 @@ struct color* tile_edge(const struct tile* t, enum direction d)
 	return t->colored_tile[d];
 }
 
+
+
 // A function that fills a deck with tiles
 // The contents of the deck `d` after the call must always be the same.
 void deck_init(struct deck* d)
