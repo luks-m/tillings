@@ -6,18 +6,6 @@ struct tile {
   struct color* colored_tile[4];
 };
 
-#define MAX_DECK_SIZE 20
-
-struct deck_pair {
-  const struct tile* t;
-  unsigned int n;
-};
-
-struct deck {
-  struct deck_pair cards[MAX_DECK_SIZE];
-  unsigned int size;
-};
-
 // A tile that is empty
 const struct tile* empty_tile()
 {
@@ -45,7 +33,6 @@ struct color* tile_edge(const struct tile* t, enum direction d)
 {
 	return t->colored_tile[d];
 }
-
 
 struct color* red_p = color_from_name("rouge");
 struct color* blue_p = color_from_name("bleu");
