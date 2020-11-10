@@ -8,14 +8,17 @@ src/color.o: src/color.c
 src/tile.o: src/tile.c src/color.h
 	cc -c $(CFLAGS) -o src/tile.o src/tile.c
 
-src/projet.o: src/project.c src/tile.h src/color.h
+src/project.o: src/project.c src/tile.h src/color.h
 	cc -c $(CFLAGS) -o src/project.o src/project.c
 
 project: src/project.o src/color.o src/tile.o
 	cc $(CFLAGS) -o project src/project.o src/color.o src/tile.o
 
-test:
-	cc $(CFLAGS) tst/test.c -o test && ./test
+test: src/color.o src/tile.o tst/test.c
+	cp src/color.{o,c,h} tst/
+	cp src/tile.{o,c,h} tst/
+	cc -c $(FLAGS) -o tst/test.o tst/test.c
+	cc $(CFLAGS) -o test tst/tile.o tst/color.o test.o && ./test
 
 clean:
-	rm -f src/*.o tst/*.o project test
+	rm -f src/*.o tst/*.{o,h} tst/color.c tst/tile.c project test
