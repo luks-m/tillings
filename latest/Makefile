@@ -1,4 +1,4 @@
-CFLAGS = -std=c99 -Wall -Wextra
+CFLAGS = -std=c99 -Wall -Wextra -Isrc
 
 all: project
 
@@ -14,15 +14,9 @@ src/project.o: src/project.c src/tile.h src/color.h
 project: src/project.o src/color.o src/tile.o
 	cc $(CFLAGS) -o project src/project.o src/color.o src/tile.o
 
-test: src/color.o src/tile.o tst/test.c
-	cp src/color.o tst/
-	cp src/color.c tst/
-	cp src/color.h tst/
-	cp src/tile.o tst/
-	cp src/tile.c tst/
-	cp src/tile.h tst/
-	cc -c $(FLAGS) -o tst/test.o tst/test.c
-	cc $(CFLAGS) -o test tst/tile.o tst/color.o test.o && ./test
+test: src/color.o src/tile.o tst/test.c src/tile.h src/color.h
+	cc -c $(CFLAGS) -o tst/test.o tst/test.c
+	cc $(CFLAGS) -o test tst/tile.o src/color.o tst/test.o && ./test
 
 clean:
-	rm -f src/*.o tst/*.o tst/*.h tst/color.c tst/tile.c project test
+	rm -f src/*.o tst/*.o project test

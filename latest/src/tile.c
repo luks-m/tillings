@@ -1,8 +1,6 @@
 #include <stdio.h>
 #include "color.h"
-
-enum direction { NORTH, SOUTH, EAST, WEST,
-  MAX_DIRECTION, ERROR_DIRECTION = -1 };
+#include "tile.h"
 
 struct tile {
   struct color* colored_tile[4];
@@ -43,7 +41,34 @@ int tile_equals(const struct tile* t1, const struct tile* t2)
 }
 
 // Accessors to the color of the edges
-struct color* tile_edge(const struct tile* t, enum direction d);
+struct color* tile_edge(const struct tile* t, enum direction d)
+{
+	return t->colored_tile[d];
+}
 
 // A function that fills a deck with tiles
-void deck_init(struct deck* d);
+// The contents of the deck `d` after the call must always be the same.
+void deck_init(struct deck* d)
+{
+	struct tile t1 ={{&red, &red, &red, &red}};
+	struct tile t2 ={{&blue, &blue, &blue, &blue}};
+	struct tile t3 ={{}};
+	struct tile t4 ={};
+	struct tile t5 ={};
+	struct tile t6 ={};
+	struct tile t7 ={};
+	struct tile t8 ={};
+	struct tile t9 ={};
+	struct tile t10 ={};
+	struct tile t11 ={};
+	struct tile t12 ={};
+	struct tile t13 ={};
+	struct tile t14 ={};
+	struct tile t15 ={};
+	struct tile t16 ={};
+	struct tile t17 ={};
+	struct tile t18 ={};
+	struct tile t19 ={};
+	struct tile t20 ={};
+}
+
