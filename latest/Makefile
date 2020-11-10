@@ -14,7 +14,7 @@ projet.o: src/project.c src/tile.h src/color.h
 project: src/project.o src/color.o src/tile.o
 	cc $(CFLAGS) -o project src/project.o src/color.o src/tile.o
 
-test:
+test: 
 	cc $(CFLAGS) tst/test.c -o test && ./test
 
 clean:
