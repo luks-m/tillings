@@ -30,6 +30,11 @@ int main(int argc, char *argv[])
 
 	printf("Est ce que tile_equals fonctionne avec des tuiles vides : %s\n",
 		   tile_equals(empty_tile(), empty_tile())?"oui":"non");
+
+	
+	struct deck base_deck = {};
+	deck_init(&base_deck);
+	printf("%s\n", color_name( tile_edge(base_deck.cards[0].t, 0) ));
 	
 	return 0;
 }

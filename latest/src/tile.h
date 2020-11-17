@@ -8,7 +8,7 @@ enum direction { NORTH, SOUTH, EAST, WEST,
 
 struct tile; // Anonymous struct for tiles
 
-#define MAX_DECK_SIZE 20
+#define MAX_DECK_SIZE 100
 
 struct deck_pair {
   const struct tile* t;

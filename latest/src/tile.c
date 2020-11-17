@@ -2,6 +2,9 @@
 #include "color.h"
 #include "tile.h"
 
+#define DECK_SIZE 20
+//Il manque la comparaison avec MAX_DECK_SIZE
+
 struct tile {
   struct color* colored_tile[4];
 };
@@ -38,9 +41,9 @@ struct color* tile_edge(const struct tile* t, enum direction d)
   return t->colored_tile[d];
 }
 
-struct tile tiles[MAX_DECK_SIZE] = {};
+struct tile tiles[DECK_SIZE] = {};
 				 
-int tile_number[MAX_DECK_SIZE] = {
+int tile_number[DECK_SIZE] = {
 				  100, 100, 100, 100, 100,
 				  100, 100, 100, 100, 100,
 				  100, 100, 100, 100, 100,
@@ -55,7 +58,7 @@ void deck_init(struct deck* d)
   struct color* blue_p = color_from_name("bleu");
   struct color* green_p = color_from_name("vert");
 
-  struct tile tiles_p[MAX_DECK_SIZE] = {
+  struct tile tiles_p[DECK_SIZE] = {
 					{{red_p, red_p, red_p, red_p}},
 					{{blue_p, blue_p, blue_p, blue_p}},
 					{{green_p, green_p, green_p, green_p}},
@@ -78,13 +81,13 @@ void deck_init(struct deck* d)
 					{{blue_p, red_p, red_p, red_p}}
   };
 
-  for (int i = 0 ; i < MAX_DECK_SIZE ; ++i)
+  for (int i = 0 ; i < DECK_SIZE ; ++i)
     tiles[i]=tiles_p[i];
 
-  for (int i = 0 ; i < MAX_DECK_SIZE ; ++i){
+  for (int i = 0 ; i < DECK_SIZE ; ++i){
     d->cards[i].t = &tiles[i];
     d->cards[i].n = tile_number[i];
-    d->size += tile_number[i];
+    d->size += 1;
   }
 }
 
