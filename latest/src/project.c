@@ -1,6 +1,9 @@
 #include <getopt.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include "tile.h"
+#include "color.h"
+
 
 //Global number of players
 static int players = 2;
@@ -42,11 +45,21 @@ void parse_opts(int argc, char* argv[]) {
 }
 
 ////////////////////////////////////////////////////////////////
+
+
 int main(int argc,  char* argv[])
 {
   parse_opts(argc, argv);
   printf("Number of players : %d\n", players);
   printf("Size of the board : %d\n", board);
   printf("Seed : %d\n", seed);
+  
+  //Initialization of the game
+  struct deck base_deck = {};
+
+  deck_init(&base_deck);
+  printf("%s", )
+
+
   return EXIT_SUCCESS;
 }
