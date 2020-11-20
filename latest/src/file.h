@@ -1,5 +1,7 @@
-#include <stdlib.h>
+#ifndef _FILE_H_
+#define _FILE_H_
 
+#include <stdlib.h>
 #define MAX_SIZE_FILE 2000
 
 struct file {
@@ -21,3 +23,5 @@ void *pop(struct file *f);
 void mix(struct file*f);
 
 void distribute(struct file *f, struct file tab_f[], int joueurs);
+
+#endif // _FILE_H_
