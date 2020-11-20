@@ -79,7 +79,7 @@ int main(int argc,  char* argv[])
   
   deck_init(&base_deck);
   printf("%s\n", color_name( tile_edge(base_deck.cards[0].t, 0) ));
-
+  
   transform(base_deck, &deck_file);
   printf("%s\n", color_name( tile_edge( deck_file.queue[0], 0 )));
   
