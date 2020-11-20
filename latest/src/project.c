@@ -12,7 +12,7 @@
 static int nb_players = 2;
 
 //Global size of the board
-static int board = 10;
+static int board_size = 10;
 
 // Global seed for the random number generator
 static int seed = 0;
@@ -43,7 +43,7 @@ void parse_opts(int argc, char* argv[]) {
 		argv[0], MAX_SIZE_BOARD);
 	exit(EXIT_FAILURE);		
       }
-      board = atoi(optarg);
+      board_size = atoi(optarg);
       break;
     case 's':
       seed = atoi(optarg);
@@ -62,11 +62,9 @@ void parse_opts(int argc, char* argv[]) {
 //trasnform a deck of deck_pair into a file with all the tiles
 void transform(struct deck d, struct file* f)
 {
-  for (unsigned int i = 0 ; i < d.size ; i++){
-    for  (unsigned int j = 0 ; j < d.cards[i].n ; j++){
-      push(f, d.cards[i].t);
-    }
-  }
+	for (unsigned int i = 0 ; i < d.size ; i++)
+		for  (unsigned int j = 0 ; j < d.cards[i].n ; j++)
+			push(f, d.cards[i].t);
 }
 
 //return the positive int associate to his pointer and return -1 if the pointer is NULL
@@ -77,37 +75,24 @@ int ptoi(const int *i)
   return *i;
 }
 
+void first_tile(const struct tile* b[MAX_SIZE_BOARD][], struct file f_hand[])
+{
+	int first_player = 0;
+	b[rand()%board_size][rand()%board_size] = pop(&f_hand[first_player]);
+}
+
+int test_position(struct tile* b[50][50], int x, int y, struct tile* t);
+
 int main(int argc,  char* argv[])
 {
-  //each player is represented by a number
-  int player1 = 0;
-  int player2 = 1;
-  int player3 = 2;
-  int player4 = 3;
-  int player5 = 4;
-  int player6 = 5;
-  int player7 = 6;
-  int player8 = 7;
-  int player9 = 8;
-  int player10 = 9;
-  int player11 = 10;
-  int player12 = 11;
-  int player13 = 12;
-  int player14 = 13;
-  int player15 = 14;
-  int player16 = 15;
-  int player17 = 16;
-  int player18 = 17;
-  int player19 = 18;
-  int player20 = 19;
-
-  int *players[20] = {&player1, &player2, &player3, &player4, &player5, &player6, &player7, &player8, &player9, &player10, &player11, &player12, &player13, &player14, &player15, &player16, &player17, &player18, &player19, &player20};
 
   struct file deck_players[MAX_PLAYERS] = {}; //a tabular that represent the decks of the players
+
+  const struct tile* board[MAX_SIZE_BOARD][MAX_SIZE_BOARD] = {};
   
   parse_opts(argc, argv);
   printf("Number of players : %d\n", nb_players);
-  printf("Size of the board : %d\n", board);
+  printf("Size of the board : %d\n", board_size);
   printf("Seed : %d\n", seed);
   
   //Initialization of the game
@@ -118,18 +103,17 @@ int main(int argc,  char* argv[])
   deck_init(&base_deck);   //initialization of the deck
   transform(base_deck, &deck_file);
 
-  for (int i = 0; i < nb_players; i++)
-    push(&player_file, players[i]);     //initialization of the file of players used for the determination of the active player
-
-  mix(&player_file);
   mix(&deck_file);
 
   distribute(&deck_file, deck_players, nb_players);	 
 
-  //création du plateau de jeu 50*50 (pointeur NULL)
-  //fonction qui prend entier un plateau et un pointeur vers une tuile et nous place la tuile sur la première case libre respectant les conditions
-  //création de la boucle de jeu
+  first_tile(board, deck_players); //the first player play and put his first tile on the board randomly 
+
+  //créer une fonction qui prend en argument une tuile et une position (x,y) et qui retourne 1 si on peut positionner la tuile, 0 si on ne peut pas
   
+  //créer une fonction qui prend en arguement une tuile et le plateau de jeu et vérifie si la tuile est plaçable, si c'est le cas elle retourne 1 et place la tuile sur le plateau ; sinon elle retourne 0 et place la tuile du joueur en dessous de son paquet
+  
+  //ona  une variable qui compte le nombre de skip d'affilé et qui arrête le jeu si elle vaut nb_players et qui reviens a 0 si un joueur arrive a placer une tuile
 
   return EXIT_SUCCESS;
 }
