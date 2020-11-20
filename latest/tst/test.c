@@ -4,6 +4,12 @@
 #include "tile.h"
 #include "file.h"
 
+int ptoi(const int *i)
+{
+	return *i;
+}
+
+
 void transform(struct deck d, struct file* f)
 {
 	for (unsigned int i = 0 ; i < d.size ; i++){
@@ -54,17 +60,20 @@ int main(int argc, char *argv[])
 	transform(base_deck, &deck_file);
 	
 	printf("la couleur du triangle nord de la tuile dont l'adresse se trouve en tête de file est : %s\n", color_name( tile_edge( top(&deck_file), 0 )));
-	print("\n");
+	printf("\n");
 
 	printf("On créé une file vide\n");
 	struct file test_file = {};
-
+	int un = 1;
+	int deux = 2;
 	printf("On va tester top, pop et push, leurs cas d'utilisation normaux et limites\n");
-	printf("On essaye de faire un top sur la liste vide, résultat : \n");
-	printf("On fait push un 1 puis un 2 dans la file\n");
-	printf("On fait un top et on trouve : \n");
-	printf("On fait deux pop et on trouve : \n");
-	prinf("La liste est normalement vide, on va pouvoir essayer un pop et on tombe sur : \n");
+	printf("On essaye de faire un top sur la liste vide, résultat : %p\n", top(&test_file));
+	printf("On fait push une adresse puis une deuxième dans la file\n");
+	push(&test_file, &un);
+	push(&test_file, &deux);
+	printf("On fait un top et on trouve : %d\n", ptoi(top(&test_file)) );
+	printf("On fait deux pop et on trouve : %d, %d\n", ptoi(pop(&test_file)) , ptoi(pop(&test_file)) );
+	printf("La liste est normalement vide, on va pouvoir essayer un pop et on tombe sur : %p \n",pop(&test_file)) ;
 	
 	
 	
