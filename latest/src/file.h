@@ -2,7 +2,7 @@
 #define _FILE_H_
 
 #include <stdlib.h>
-#define MAX_SIZE_FILE 2000
+#define MAX_SIZE_FILE 200
 
 struct file {
   const void *queue[MAX_SIZE_FILE]; //file

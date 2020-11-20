@@ -44,10 +44,10 @@ struct color* tile_edge(const struct tile* t, enum direction d)
 struct tile tiles[DECK_SIZE] = {};
 				 
 int tile_number[DECK_SIZE] = {
-				  100, 100, 100, 100, 100,
-				  100, 100, 100, 100, 100,
-				  100, 100, 100, 100, 100,
-				  100, 100, 100, 100, 100, 								  
+			      10, 10, 10, 10, 10,
+			      10, 10, 10, 10, 10,
+			      10, 10, 10, 10, 10,
+			      10, 10, 10, 10, 10, 								  
 };
 
 // A function that fills a deck with tiles

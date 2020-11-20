@@ -10,7 +10,7 @@
 static int players = 2;
 
 //Global size of the board
-static int board = 50;
+static int board = 10;
 
 // Global seed for the random number generator
 static int seed = 0;
