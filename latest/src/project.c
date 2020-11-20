@@ -66,6 +66,13 @@ void transform(struct deck d, struct file* f)
 	}
 }
 
+int ptoi(const int *i) //return the positive int associate to his pointer
+{
+	if (i == NULL)
+		return -1;
+	return *i;
+}
+
 int main(int argc,  char* argv[])
 {
   parse_opts(argc, argv);

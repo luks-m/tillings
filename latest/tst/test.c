@@ -4,11 +4,12 @@
 #include "tile.h"
 #include "file.h"
 
-int ptoi(const int *i)
+int ptoi(const int *i) //return the positive int associate to his pointer
 {
+	if (i == NULL)
+		return -1;
 	return *i;
 }
-
 
 void transform(struct deck d, struct file* f)
 {
@@ -64,16 +65,18 @@ int main(int argc, char *argv[])
 
 	printf("On créé une file vide\n");
 	struct file test_file = {};
+	printf("%d\n", test_file.size);
 	int un = 1;
 	int deux = 2;
 	printf("On va tester top, pop et push, leurs cas d'utilisation normaux et limites\n");
-	printf("On essaye de faire un top sur la liste vide, résultat : %p\n", top(&test_file));
+	printf("On essaye de faire un top sur la liste vide, résultat : %d\n",
+		   ptoi(top(&test_file)) );
 	printf("On fait push une adresse puis une deuxième dans la file\n");
 	push(&test_file, &un);
 	push(&test_file, &deux);
 	printf("On fait un top et on trouve : %d\n", ptoi(top(&test_file)) );
 	printf("On fait deux pop et on trouve : %d, %d\n", ptoi(pop(&test_file)) , ptoi(pop(&test_file)) );
-	printf("La liste est normalement vide, on va pouvoir essayer un pop et on tombe sur : %p \n",pop(&test_file)) ;
+	printf("La liste est normalement vide, on va pouvoir essayer un pop et on tombe sur : %d \n",ptoi(pop(&test_file)) ) ;
 	
 	
 	
