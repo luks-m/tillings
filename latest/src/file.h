@@ -14,14 +14,14 @@ struct file {
  * queue[n] is the last element of the file, where we push others elements
  */
 
-void push(struct file *f, const void *element); //
+void push(struct file *f, const void *element); //insert an element at the end of the file
 
-const void *top(struct file *f);
+const void *top(struct file *f); //return a pointer to the element at the top of the file if the file is not empty
 
-const void *pop(struct file *f);
+const void *pop(struct file *f); //remove and return the element at the top of the file if the file is not empty
 
-void mix(struct file*f);
+void mix(struct file*f); //mix the elements of the file with randomness
 
-void distribute(struct file *f, struct file tab_f[], int joueurs);
+void distribute(struct file *f, struct file tab_f[], int joueurs); //distribute the elements of the file f to several players
 
 #endif // _FILE_H_
