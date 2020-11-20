@@ -1,31 +1,39 @@
 #include "file.h"
 
-void push(struct file *f, void *element)
+void push(struct file *f, const void *element)
 {
-  f->queue[f->size] = element;
-  (f->size)++;
+  if (f->size < MAX_SIZE_FILE) {
+    f->queue[f->size] = element;
+    f->size++;
+  }
 }
 
-void *top(struct file *f)
+const void *top(struct file *f)
 {
+  if (f->size == 0)
+    return NULL;
   return f->queue[0];
 }
 
-void *pop(struct file *f)
+const void *pop(struct file *f)
 {
-  void *temp = top(f);
-  for (int i = 1; i < f->size; i++)
-    f->queue[i-1] = f->queue[i];
-  f->queue[(f->size)-1] = NULL;
-  (f->size)--;
-  return temp;
+  if (f->size == 0)
+    return NULL;
+  else {
+    const void *temp = top(f);
+    for (int i = 1; i < f->size; i++)
+      f->queue[i-1] = f->queue[i];
+    f->queue[f->size-1] = NULL;
+    f->size--;
+    return temp;
+  }
 }
 
 void mix(struct file *f)
 {
   for (int i = 0; i < f->size; i++) {
     int idx = rand() % (f->size -i) + i;
-    void *temp = f->queue[idx];
+    const void *temp = f->queue[idx];
     f->queue[idx] = f->queue[i];
     f->queue[i] = temp;
   }

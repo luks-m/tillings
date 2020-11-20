@@ -5,7 +5,7 @@
 #define MAX_SIZE_FILE 2000
 
 struct file {
-  void *queue[MAX_SIZE_FILE]; //file
+  const void *queue[MAX_SIZE_FILE]; //file
   int size; //number of useful elements in the file
 };
 
@@ -14,11 +14,11 @@ struct file {
  * queue[n] is the last element of the file, where we push others elements
  */
 
-void push(struct file *f, void *element);
+void push(struct file *f, const void *element); //
 
-void *top(struct file *f);
+const void *top(struct file *f);
 
-void *pop(struct file *f);
+const void *pop(struct file *f);
 
 void mix(struct file*f);
 
