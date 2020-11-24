@@ -59,35 +59,75 @@ void parse_opts(int argc, char* argv[]) {
 
 ////////////////////////////////////////////////////////////////
 
-//trasnform a deck of deck_pair into a file with all the tiles
+//transform a deck of deck_pair into a file with all the tiles
 void transform(struct deck d, struct file* f)
 {
-	for (unsigned int i = 0 ; i < d.size ; i++)
-		for  (unsigned int j = 0 ; j < d.cards[i].n ; j++)
-			push(f, d.cards[i].t);
-}
-
-//return the positive int associate to his pointer and return -1 if the pointer is NULL
-int ptoi(const int *i) 
-{
-  if (i == NULL)
-    return -1;       
-  return *i;
+  for (unsigned int i = 0 ; i < d.size ; i++)
+    for  (unsigned int j = 0 ; j < d.cards[i].n ; j++)
+      push(f, d.cards[i].t);
 }
 
 void first_tile(const struct tile* b[MAX_SIZE_BOARD][MAX_SIZE_BOARD], struct file f_hand[])
 {
-	int first_player = 0;
-	b[rand()%board_size][rand()%board_size] = pop(&f_hand[first_player]);
+  int first_player = 0;
+  b[rand()%board_size][rand()%board_size] = pop(&f_hand[first_player]);
 }
 
-int test_position(const struct tile* b[MAX_SIZE_BOARD][MAX_SIZE_BOARD], int x, int y, struct tile* t);
+//return 1 if the position is available and 0 if it is not
+int test_position(const struct tile* b[MAX_SIZE_BOARD][MAX_SIZE_BOARD], int x, int y, const struct tile* t)
+{
+  int tested_direction[MAX_DIRECTION] = {1,1,1,1}; //tabular of bool
+  int opposite_direction[MAX_DIRECTION] = {SOUTH, NORTH, WEST, EAST};
+  int direction_x[MAX_DIRECTION] = {0,0,1,-1};
+  int direction_y[MAX_DIRECTION] = {-1,1,0,0};
+  
+  //coordinates of the tile compared with tile t
+  int new_x = 0;
+  int new_y = 0;
+  int nb_not_empty_tile = 0; //number of not empty tiles near to the position (x,y)
+  
+  if (b[x][y] != NULL)  //a player cannot replace an already placed tile
+    return 0;
+
+  //reducing the number of tests because of the board's limitations
+  if (x == 0)
+    tested_direction[WEST] = 0;
+  if (x == MAX_SIZE_BOARD - 1)
+    tested_direction[EAST] = 0;
+  if (y == 0)
+    tested_direction[NORTH] = 0;
+  if (y == MAX_SIZE_BOARD - 1)
+    tested_direction[SOUTH] = 0;
+
+  //testing the correspondance between edges
+  for (int i = 0; i < MAX_DIRECTION; i++) {
+    if (tested_direction[i] == 1) {
+      new_x = x + direction_x[i];
+      new_y = y + direction_y[i];
+      if (!tile_is_empty(b[new_x][new_y])) {  //no comparison needed with empty tile,
+	nb_not_empty_tile++;
+	if (tile_edge(t, i) != tile_edge(b[new_x][new_y], opposite_direction[i]))
+	  return 0;
+      }
+    }
+  }
+  return (nb_not_empty_tile > 0); //testing the connectedness
+}
+
+int tile_placement(const struct tile *t, const struct tile* board[MAX_SIZE_BOARD][MAX_SIZE_BOARD], int size)
+{
+  for (int i = 0; i < size; i++)
+    for (int j = 0; j < size; j++)
+      if (test_position(board, i, j, t) == 1) {
+	board[i][j] = t;
+	return 1;
+      }
+  return 0;
+}
 
 int main(int argc,  char* argv[])
 {
-
   struct file deck_players[MAX_PLAYERS] = {}; //a tabular that represent the decks of the players
-
   const struct tile* board[MAX_SIZE_BOARD][MAX_SIZE_BOARD] = {};
   
   parse_opts(argc, argv);
@@ -98,6 +138,8 @@ int main(int argc,  char* argv[])
   //Initialization of the game
   struct deck base_deck = {};
   struct file deck_file = {};
+  int skip = 0;
+  int active_player = 0;
   
   deck_init(&base_deck);   //initialization of the deck
   transform(base_deck, &deck_file);
@@ -106,13 +148,41 @@ int main(int argc,  char* argv[])
 
   distribute(&deck_file, deck_players, nb_players);	 
 
-  first_tile(board, deck_players); //the first player play and put his first tile on the board randomly 
+  first_tile(board, deck_players); //the first player play and put his first tile on the board randomly
 
-  //créer une fonction qui prend en argument une tuile et une position (x,y) et qui retourne 1 si on peut positionner la tuile, 0 si on ne peut pas
-  
-  //créer une fonction qui prend en arguement une tuile et le plateau de jeu et vérifie si la tuile est plaçable, si c'est le cas elle retourne 1 et place la tuile sur le plateau ; sinon elle retourne 0 et place la tuile du joueur en dessous de son paquet
-  
-  //ona  une variable qui compte le nombre de skip d'affilé et qui arrête le jeu si elle vaut nb_players et qui reviens a 0 si un joueur arrive a placer une tuile
+  //Game loop
+  int is_placed = 0;
+  const struct tile *active_tile = empty_tile();
+
+  while (skip < nb_players) {
+    active_tile = pop(&deck_players[active_player]);
+    is_placed = tile_placement(active_tile, board, board_size);
+    if (is_placed == 0) {
+      skip++;
+      push(&deck_players[active_player], active_tile);
+    }
+    else {
+      if (top(&deck_players[active_player]) == NULL)
+	skip = nb_players;
+      else
+	skip = 0;
+    }
+    active_player = (active_player + 1) % nb_players;  //update the player
+  }
+
+  //Leaderboard
+  int leaderboard[MAX_PLAYERS] = {};
+  for (int i = 0; i < nb_players; i++)
+    leaderboard[i]=deck_players[i].size;
+  int player_min = 0;
+  for (int j = 0; j < nb_players; j++) {
+    for (int i = 0; i < nb_players; i++)
+      if (leaderboard[i] < leaderboard[player_min])
+	player_min = i;
+    printf("Le joueur %d\t est arrivé %d\t ième avec %d\t tuile(s) restante(s)\n",
+	   player_min + 1, j + 1, leaderboard[player_min]);
+    leaderboard[player_min] = MAX_SIZE_FILE + 1;
+  }
 
   return EXIT_SUCCESS;
 }

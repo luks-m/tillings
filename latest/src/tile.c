@@ -3,7 +3,7 @@
 #include "tile.h"
 
 #define DECK_SIZE 20
-//Il manque la comparaison avec MAX_DECK_SIZE
+
 
 struct tile {
   struct color* colored_tile[4];

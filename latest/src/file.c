@@ -41,7 +41,8 @@ void mix(struct file *f)
 
 void distribute(struct file *f, struct file tab_f[], int joueurs)
 {
-  for (int i = 0; i < f->size / joueurs ; i++)
+  int temp_size = f->size;
+  for (int i = 0; i < temp_size / joueurs ; i++)
     for (int j = 0; j < joueurs; j++)
       push(&(tab_f[j]), pop(f));
 }

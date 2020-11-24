@@ -8,7 +8,7 @@ enum direction { NORTH, SOUTH, EAST, WEST,
 
 struct tile; // Anonymous struct for tiles
 
-#define MAX_DECK_SIZE 100
+#define MAX_DECK_SIZE 200
 
 struct deck_pair {
   const struct tile* t;
@@ -22,10 +22,13 @@ struct deck {
 
 // A tile that is empty
 const struct tile* empty_tile();
+
 // A predicate telling if the tile is empty
 int tile_is_empty(const struct tile* t);
+
 // A comparator between tiles
 int tile_equals(const struct tile* t1, const struct tile* t2);
+
 // Accessors to the color of the edges
 struct color* tile_edge(const struct tile* t, enum direction d);
 
