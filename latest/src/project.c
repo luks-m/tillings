@@ -75,13 +75,13 @@ int ptoi(const int *i)
   return *i;
 }
 
-void first_tile(const struct tile* b[MAX_SIZE_BOARD][], struct file f_hand[])
+void first_tile(const struct tile* b[MAX_SIZE_BOARD][MAX_SIZE_BOARD], struct file f_hand[])
 {
 	int first_player = 0;
 	b[rand()%board_size][rand()%board_size] = pop(&f_hand[first_player]);
 }
 
-int test_position(struct tile* b[50][50], int x, int y, struct tile* t);
+int test_position(const struct tile* b[MAX_SIZE_BOARD][MAX_SIZE_BOARD], int x, int y, struct tile* t);
 
 int main(int argc,  char* argv[])
 {
@@ -98,7 +98,6 @@ int main(int argc,  char* argv[])
   //Initialization of the game
   struct deck base_deck = {};
   struct file deck_file = {};
-  struct file player_file = {};
   
   deck_init(&base_deck);   //initialization of the deck
   transform(base_deck, &deck_file);
