@@ -8,9 +8,9 @@ struct color{
   char *name;
 };
 
-struct color red = {"\e[0;31mR\033[0m","rouge"};
-struct color blue = {"\e[0;34mB\033[0m","bleu"};
-struct color green = {"\e[0;32mV\033[0m","vert"};
+struct color red = {"\e[0;31mR\033[0m","red"};
+struct color blue = {"\e[0;34mB\033[0m","blue"};
+struct color green = {"\e[0;32mV\033[0m","green"};
 
 struct color* colors[COLOR_NUMBER] = {&red, &blue, &green};
 

@@ -54,9 +54,9 @@ int tile_number[DECK_SIZE] = {
 // The contents of the deck `d` after the call must always be the same.
 void deck_init(struct deck* d)
 {
-  struct color* red_p = color_from_name("rouge");
-  struct color* blue_p = color_from_name("bleu");
-  struct color* green_p = color_from_name("vert");
+  struct color* red_p = color_from_name("red");
+  struct color* blue_p = color_from_name("blue");
+  struct color* green_p = color_from_name("green");
 
   struct tile tiles_p[DECK_SIZE] = {
 					{{red_p, red_p, red_p, red_p}},
