@@ -17,6 +17,8 @@ static int board_size = 10;
 // Global seed for the random number generator
 static int seed = 0;
 
+//Global parameter, if it is 1 the program draws the board if it is 0 it doesn't
+static int draw = 0;
 
 ////////////////////////////////////////////////////////////////
 // Function for parsing the options of the program
@@ -27,8 +29,11 @@ static int seed = 0;
 
 void parse_opts(int argc, char* argv[]) {
 	int opt;
-	while ((opt = getopt(argc, argv, "b:s:n:")) != -1) {
+	while ((opt = getopt(argc, argv, "b:s:n:d:")) != -1) {
 		switch (opt) {
+		case 'd':
+			draw = 1;
+			break;
 		case 'n':
 			if (atoi(optarg) > MAX_PLAYERS) {
 				fprintf(stderr, "Usage: %s [-n number of players <= %d]\n",
@@ -125,6 +130,30 @@ int tile_placement(const struct tile *t, const struct tile* board[MAX_SIZE_BOARD
 	return 0;
 }
 
+void draw_board(const struct tile* board[MAX_SIZE_BOARD][MAX_SIZE_BOARD], int size)
+{
+	struct color* c1;
+	struct color* c2;
+	struct color* c3;
+	struct color* c4;
+	for (int i = 0 ; i < size ; i++){
+		printf("\n\n");
+		for (int j = 0 ; j < size ; j++){
+			if (tile_is_empty(board[j][i]))
+				printf("E,E,E,E \t");
+			else{
+				c1 = tile_edge(board[j][i],NORTH);
+				c2 = tile_edge(board[j][i],SOUTH);
+				c3 = tile_edge(board[j][i],EAST);
+				c4 = tile_edge(board[j][i],WEST);
+				printf("%s,%s,%s,%s \t",
+					   color_cstring(c1),color_cstring(c2) ,color_cstring(c3) ,color_cstring(c4));
+			}
+		}
+	}
+}
+
+
 int main(int argc,  char* argv[])
 {
 	//Initialization of empty decks for the players
@@ -210,6 +239,10 @@ int main(int argc,  char* argv[])
 			   player_min + 1, j + 1, leaderboard[player_min]);
 		leaderboard[player_min] = MAX_SIZE_FILE + 1;
 	}
+
+	//Draw the board
+	if (draw)
+		draw_board(board, board_size);
 
 	return EXIT_SUCCESS;
 }
