@@ -128,7 +128,10 @@ int tile_placement(const struct tile *t, const struct tile* board[MAX_SIZE_BOARD
 int main(int argc,  char* argv[])
 {
   struct file deck_players[MAX_PLAYERS] = {}; //a tabular that represent the decks of the players
-  const struct tile* board[MAX_SIZE_BOARD][MAX_SIZE_BOARD] = {{empty_tile()}};
+  const struct tile* board[MAX_SIZE_BOARD][MAX_SIZE_BOARD] = {};
+  for (int i = 0; i < MAX_SIZE_BOARD; i++)
+    for (int j = 0; j < MAX_SIZE_BOARD; j++)
+      board[i][j] = empty_tile();
   
   parse_opts(argc, argv);
   printf("Number of players : %d\n", nb_players);
