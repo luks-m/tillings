@@ -1,12 +1,28 @@
-CFLAGS = -Wall -Wextra -std=c99
+CFLAGS = -std=c99 -Wall -Wextra -Isrc
 
-all: code
+all: project
 
-code: src/project.c
-        gcc $(CFLAGS) src/project.c -o project
+src/color.o: src/color.c src/color.h
+	cc -c $(CFLAGS) -o src/color.o src/color.c
 
-test:
-        gcc $(CFLAGS) tst/test.c -o test && ./test
+src/tile.o: src/tile.c src/color.h src/tile.h
+	cc -c $(CFLAGS) -o src/tile.o src/tile.c
+
+src/web.o: src/web.c src/web.h
+	cc -c $(CFLAGS) -o src/web.o src/web.c
+
+src/file.o: src/file.c src/file.h
+	cc -c $(CFLAGS) -o src/file.o src/file.c
+
+src/project.o: src/project.c src/tile.h src/color.h src/file.h src/web.h
+	cc -c $(CFLAGS) -o src/project.o src/project.c
+
+project: src/project.o src/color.o src/tile.o src/file.o src/web.o
+	cc $(CFLAGS) -o project src/project.o src/color.o src/tile.o src/file.o src/web.o
+
+test: src/color.o src/tile.o tst/test.c src/tile.h src/color.h src/file.h src/file.o
+	cc -c $(CFLAGS) -o tst/test.o tst/test.c
+	cc $(CFLAGS) -o test src/tile.o src/color.o src/file.o tst/test.o && ./test
 
 clean:
-        rm -f project test
+	rm -f src/*.o tst/*.o project test output.html
