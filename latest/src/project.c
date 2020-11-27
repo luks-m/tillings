@@ -4,6 +4,7 @@
 #include "tile.h"
 #include "color.h"
 #include "file.h"
+#include "web.h"
 
 #define MAX_PLAYERS 20
 #define MAX_SIZE_BOARD 50
@@ -241,8 +242,10 @@ int main(int argc,  char* argv[])
   }
 
   //Draw the board
-  if (draw)
+  if (draw) {
     draw_board(board, board_size);
+    web_export(board);
+  }
    
 
   return EXIT_SUCCESS;
