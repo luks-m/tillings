@@ -127,8 +127,8 @@ int tile_placement(const struct tile *t, const struct tile* board[MAX_SIZE_BOARD
 
 int main(int argc,  char* argv[])
 {
-  struct file deck_players[MAX_PLAYERS] = {}; //a tabular that represent the decks of the players
-  const struct tile* board[MAX_SIZE_BOARD][MAX_SIZE_BOARD] = {};
+  struct file deck_players[MAX_PLAYERS]; //a tabular that represent the decks of the players
+  const struct tile* board[MAX_SIZE_BOARD][MAX_SIZE_BOARD];
   for (int i = 0; i < MAX_SIZE_BOARD; i++)
     for (int j = 0; j < MAX_SIZE_BOARD; j++)
       board[i][j] = empty_tile();
@@ -139,8 +139,8 @@ int main(int argc,  char* argv[])
   printf("Seed : %d\n", seed);
   
   //Initialization of the game
-  struct deck base_deck = {};
-  struct file deck_file = {};
+  struct deck base_deck;
+  struct file deck_file;
   int skip = 0;
   int active_player = 0;
   

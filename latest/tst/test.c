@@ -20,7 +20,7 @@ void transform(struct deck d, struct file* f)
 	}
 }
 
-int main(int argc, char *argv[])
+int main()
 {
 	printf("\n");
 
