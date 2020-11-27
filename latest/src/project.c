@@ -139,8 +139,24 @@ int main(int argc,  char* argv[])
   printf("Seed : %d\n", seed);
   
   //Initialization of the game
+
+  //Initialization of an empty deck_pair
+  unsigned int n_init = 0;
+  const struct tile* t_init = empty_tile();
+  struct deck_pair pair_init = {t_init, n_init};
+
+  //Initialization of an empty deck
   struct deck base_deck;
+  for (int i = 0 ; i < MAX_DECK_SIZE; i++)
+	  base_deck.cards[i] = pair_init;
+  base_deck.size = 0;
+  
+  //Initialization of en empty file
   struct file deck_file;
+  for (int i = 0 ; i < MAX_SIZE_FILE ; i++)
+	  deck_file.queue[i] = NULL;
+  deck_file.size = 0;
+
   int skip = 0;
   int active_player = 0;
   
