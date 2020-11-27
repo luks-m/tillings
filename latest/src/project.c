@@ -151,8 +151,8 @@ void draw_board(const struct tile* board[MAX_SIZE_BOARD][MAX_SIZE_BOARD], int si
 			}
 		}
 	}
+	printf("\n");
 }
-
 
 int main(int argc,  char* argv[])
 {
