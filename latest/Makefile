@@ -20,12 +20,15 @@ src/project.o: src/project.c src/tile.h src/color.h src/file.h src/web.h src/boa
 src/board.o: src/board.c src/board.h src/tile.h
 	cc -c $(CFLAGS) -o src/board.o src/board.c
 
-project: src/project.o src/color.o src/tile.o src/file.o src/board.o src/web.o
-	cc $(CFLAGS) -o project src/project.o src/color.o src/tile.o src/file.o src/board.o src/web.o 
+src/pattern.o: src/pattern.c src/pattern.h src/board.h src/tile.h src/color.h
+	cc -c $(CFLAGS) -o src/pattern.o src/pattern.c
 
-test: src/color.o src/tile.o tst/test.c src/tile.h src/color.h src/file.h src/file.o src/board.o
+project: src/project.o src/color.o src/tile.o src/file.o src/board.o src/web.o src/pattern.o
+	cc $(CFLAGS) -o project src/project.o src/color.o src/tile.o src/file.o src/board.o src/web.o src/pattern.o
+
+test: src/color.o src/tile.o tst/test.c src/tile.h src/color.h src/file.h src/file.o
 	cc -c $(CFLAGS) -o tst/test.o tst/test.c
-	cc $(CFLAGS) -o test src/tile.o src/color.o src/file.o src/board.o tst/test.o && ./test
+	cc $(CFLAGS) -o test src/tile.o src/color.o src/file.o tst/test.o && ./test
 
 clean:
 	rm -f src/*.o tst/*.o project test output.html

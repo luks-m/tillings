@@ -6,8 +6,10 @@
 #include "file.h"
 #include "web.h"
 #include "board.h"
+#include "pattern.h"
 
 #define MAX_PLAYERS 20
+#define SCORE_PER_TILE 1
 
 //Global number of players
 static int nb_players = 2;
@@ -73,13 +75,12 @@ void transform(struct deck d, struct file* f)
       push(f, d.cards[i].t);
 }
 
-void first_tile(struct board_cell b[MAX_SIZE_BOARD][MAX_SIZE_BOARD], struct file f_hand[])
+void first_tile(struct board_cell b[MAX_SIZE_BOARD][MAX_SIZE_BOARD], struct file f_hand[], int player)
 {
-  int first_player = 0;
   int x_rand = rand()%board_size;
   int y_rand = rand()%board_size;
-  change_tile(b, x_rand, y_rand, pop(&f_hand[first_player]));
-  change_owner(b, x_rand, y_rand, first_player);
+  change_tile(b, x_rand, y_rand, pop(&f_hand[player]));
+  change_owner(b, x_rand, y_rand, player);
 }
 
 //return 1 if the position is available and 0 if it is not
@@ -122,11 +123,11 @@ int test_position(struct board_cell b[MAX_SIZE_BOARD][MAX_SIZE_BOARD], int x, in
 
 int tile_placement(const struct tile *t, struct board_cell board[MAX_SIZE_BOARD][MAX_SIZE_BOARD], int size, int player)
 {
-  for (int i = 0; i < size; i++)
-    for (int j = 0; j < size; j++)
-      if (test_position(board, i, j, t) == 1) {
-	change_tile(board, i, j, t);
-	change_owner(board, i, j, player);
+  for (int y = 0; y < size; y++)
+    for (int x = 0; x < size; x++)
+      if (test_position(board, x, y, t) == 1) {
+	change_tile(board, x, y, t);
+	change_owner(board, x, y, player);
 	return 1;
       }
   return 0;
@@ -138,18 +139,18 @@ void draw_board(struct board_cell board[MAX_SIZE_BOARD][MAX_SIZE_BOARD], int siz
   struct color* c2;
   struct color* c3;
   struct color* c4;
-  for (int i = 0 ; i < size ; i++){
+  for (int y = 0 ; y < size ; y++){
     printf("\n\n");
-    for (int j = 0 ; j < size ; j++){
-      if (tile_is_empty(board[j][i].t))
+    for (int x = 0 ; x < size ; x++){
+      if (tile_is_empty(tile(board, x, y)))
 	printf("E,E,E,E,N \t");
       else{
-	c1 = tile_edge(tile(board,j,i),NORTH);
-	c2 = tile_edge(tile(board,j,i),SOUTH);
-	c3 = tile_edge(tile(board,j,i),EAST);
-	c4 = tile_edge(tile(board,j,i),WEST);
+	c1 = tile_edge(tile(board,x,y),NORTH);
+	c2 = tile_edge(tile(board,x,y),SOUTH);
+	c3 = tile_edge(tile(board,x,y),EAST);
+	c4 = tile_edge(tile(board,x,y),WEST);
 	printf("%s,%s,%s,%s,%d \t",
-	       color_cstring(c1),color_cstring(c2) ,color_cstring(c3) ,color_cstring(c4), owner(board,j,i));
+	       color_cstring(c1),color_cstring(c2) ,color_cstring(c3) ,color_cstring(c4), owner(board,x,y));
       }
     }
   }
@@ -168,10 +169,10 @@ int main(int argc,  char* argv[])
 	
   //Initialization of an empty board
   struct board_cell board[MAX_SIZE_BOARD][MAX_SIZE_BOARD];
-  for (int i = 0; i < MAX_SIZE_BOARD; i++)
-    for (int j = 0; j < MAX_SIZE_BOARD; j++){
-      change_tile(board, i, j, empty_tile());
-      change_owner(board, i, j, NO_OWNER);
+  for (int y = 0; y < MAX_SIZE_BOARD; y++)
+    for (int x = 0; x < MAX_SIZE_BOARD; x++){
+      change_tile(board, x, y, empty_tile());
+      change_owner(board, x, y, NO_OWNER);
     }
   
   parse_opts(argc, argv);
@@ -198,8 +199,14 @@ int main(int argc,  char* argv[])
     deck_file.queue[i] = NULL;
   deck_file.size = 0;
 
+  //Initialisation of players' score
+  int score[MAX_PLAYERS];
+  for (int i = 0; i < MAX_PLAYERS; i++)
+    score[i] = 0;
+  
   int skip = 0;
   int active_player = 0;
+ 
   
   deck_init(&base_deck);   //initialization of the deck
   transform(base_deck, &deck_file);
@@ -208,7 +215,8 @@ int main(int argc,  char* argv[])
 
   distribute(&deck_file, deck_players, nb_players);	 
 
-  first_tile(board, deck_players); //the first player play and put his first tile on the board randomly
+  first_tile(board, deck_players, active_player); //the first player play and put his first tile on the board randomly
+  score[active_player] += SCORE_PER_TILE;
 
   //Game loop
   int is_placed = 0;
@@ -222,6 +230,7 @@ int main(int argc,  char* argv[])
       push(&deck_players[active_player], active_tile);
     }
     else {
+      score[active_player] += SCORE_PER_TILE;
       if (top(&deck_players[active_player]) == NULL)
 	skip = nb_players;
       else
@@ -229,19 +238,23 @@ int main(int argc,  char* argv[])
     }
     active_player = (active_player + 1) % nb_players;  //update the player
   }
-
+  
+  //calculation of score linked to patterns
+  for (int y = 0; y < board_size; y++)
+    for (int x = 0; x < board_size; x++) {
+      if (tile(board, x, y) != NULL)
+	score[owner(board, x, y)] += pattern(board, x, y);
+    }
+  
   //Leaderboard
-  int leaderboard[MAX_PLAYERS] = {};
-  for (int i = 0; i < nb_players; i++)
-    leaderboard[i]=deck_players[i].size;
-  int player_min = 0;
+  int player_max = 0;
   for (int j = 0; j < nb_players; j++) {
     for (int i = 0; i < nb_players; i++)
-      if (leaderboard[i] < leaderboard[player_min])
-	player_min = i;
-    printf("Le joueur %d\t est arrivé %d\t ième avec %d\t tuile(s) restante(s)\n",
-	   player_min + 1, j + 1, leaderboard[player_min]);
-    leaderboard[player_min] = MAX_SIZE_FILE + 1;
+      if (score[i] > score[player_max])
+	player_max = i;
+    printf("Le joueur %d\t est arrivé %d\t ième avec un score de %d\n",
+	   player_max + 1, j + 1, score[player_max]);
+    score[player_max] = -1;
   }
 
   //Draw the board
