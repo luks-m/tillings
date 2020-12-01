@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include "web.h"
  
-void web_export(const struct tile* b[50][50])
+void web_export(struct board_cell b[MAX_SIZE_BOARD][MAX_SIZE_BOARD])
 {
   FILE* fd = fopen("output.html", "w");
  
@@ -15,27 +15,28 @@ void web_export(const struct tile* b[50][50])
   fprintf(fd, "\t<body>\n");
  
   fprintf(fd, "\t\t<table style=\"border: solid 1px black;\">\n");
-  for (unsigned y = 0; y < 50; y++)
+  for (unsigned y = 0; y < MAX_SIZE_BOARD; y++)
     {
       fprintf(fd, "\t\t\t<tr>\n");
-      for (unsigned x = 0; x < 50; x++)
+      for (unsigned x = 0; x < MAX_SIZE_BOARD; x++)
         {
-	  if (b[x][y] != NULL)
+			if (tile(b,x,y) != NULL)
             {
 	      fprintf(
 		      fd,
-		      "\t\t\t\t\t<td style=\"padding: 0; width: 0; height: 0; border-left: %dpx solid %s; border-right: %dpx solid %s; border-bottom: %dpx solid %s; border-top: %dpx solid %s;\"></td>\n",
+		      "\t\t\t\t\t<td style=\"padding: 0; width: 0; height: 0; border-left: %dpx solid %s; border-right: %dpx solid %s; border-bottom: %dpx solid %s; border-top: %dpx solid %s;\">%d</td>\n",
 		      BORDER_SIZE,
-		      color_name(tile_edge(b[x][y], WEST)),
+		      color_name(tile_edge(tile(b,x,y), WEST)),
 		      BORDER_SIZE,
-		      color_name(tile_edge(b[x][y], EAST)),
+		      color_name(tile_edge(tile(b,x,y), EAST)),
 		      BORDER_SIZE,
-		      color_name(tile_edge(b[x][y], SOUTH)),
+		      color_name(tile_edge(tile(b,x,y), SOUTH)),
 		      BORDER_SIZE,
-		      color_name(tile_edge(b[x][y], NORTH))
+		      color_name(tile_edge(tile(b,x,y), NORTH)),
+			  owner(b, x, y)
 		      );
             }
-	  else
+			else
             {
 	      fprintf(
 		      fd,
