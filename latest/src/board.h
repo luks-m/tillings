@@ -32,4 +32,13 @@ int x_difference(enum direction d);
 //Give the y translation to go to the tile in direction d
 int y_difference(enum direction d);
 
+//return 1 if the position is available and 0 if it is not
+int test_position(struct board_cell b[MAX_SIZE_BOARD][MAX_SIZE_BOARD], int x, int y, const struct tile* t);
+
+//test if the tile can be placed on the board and place the tile if it is possible
+int tile_placement(const struct tile *t, struct board_cell board[MAX_SIZE_BOARD][MAX_SIZE_BOARD], int size, int player);
+
+//show a representation of the board in the terminal
+void draw_board(struct board_cell board[MAX_SIZE_BOARD][MAX_SIZE_BOARD], int size);
+
 #endif //_BOARD_H_
