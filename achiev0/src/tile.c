@@ -43,7 +43,7 @@ struct color* tile_edge(const struct tile* t, enum direction d)
 
 struct tile tiles[DECK_SIZE] = {};
 
-int n = MAX_DECK_SIZE / DECK_SIZE; //number of tiles in a pair
+const int n = MAX_DECK_SIZE / DECK_SIZE; //number of tiles in a pair
 
 int tile_number[DECK_SIZE] = {
 			      n, n, n, n, n,
