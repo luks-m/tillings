@@ -26,9 +26,11 @@ src/pattern.o: src/pattern.c src/pattern.h src/board.h src/tile.h src/color.h
 project: src/project.o src/color.o src/tile.o src/file.o src/board.o src/web.o src/pattern.o
 	cc $(CFLAGS) -o project src/project.o src/color.o src/tile.o src/file.o src/board.o src/web.o src/pattern.o
 
-test: src/color.o src/tile.o tst/test.c src/tile.h src/color.h src/file.h src/file.o
-	cc -c $(CFLAGS) -o tst/test.o tst/test.c
-	cc $(CFLAGS) -o test src/tile.o src/color.o src/file.o tst/test.o && ./test
+tst/test.o: tst/test.c src/tile.h src/color.h src/file.h src/board.h
+	cc -c $(CFLAGS) -o tst/test.o tst/test.c	
+
+test: tst/test.o src/color.o src/tile.o src/file.o src/board.o src/pattern.o
+	cc $(CFLAGS) -o test src/tile.o src/color.o src/file.o src/board.o src/pattern.o tst/test.o && ./test
 
 clean:
 	rm -f src/*.o tst/*.o project test output.html
