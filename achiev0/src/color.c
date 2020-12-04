@@ -8,6 +8,7 @@ struct color{
   char *name;
 };
 
+//Initialisation of three valid colors
 struct color red = {"\e[0;31mR\033[0m","red"};
 struct color blue = {"\e[0;34mB\033[0m","blue"};
 struct color green = {"\e[0;32mV\033[0m","green"};
@@ -16,7 +17,7 @@ struct color* colors[COLOR_NUMBER] = {&red, &blue, &green};
 
 const char* color_name(struct color* t)
 {
-	if (t == NULL)
+  if (t == NULL) //a pointer to an empty color is NULL
 		return NULL;
 	return t->name;
 	

@@ -11,16 +11,16 @@ void push(struct file *f, const void *element)
 const void *top(struct file *f)
 {
   if (f->size == 0)
-    return NULL;
+    return NULL; //the element of an empty file is NULL
   return f->queue[0];
 }
 
 const void *pop(struct file *f)
 {
-  if (f->size == 0)
-    return NULL;
+  if (f->size == 0) //a file with a size equal to 0, symbolize an empty file
+    return NULL; //the element of an empty file is NULL
   else {
-    const void *temp = top(f);
+    const void *temp = top(f); //temp saves the value of the file's first element
     for (int i = 1; i < f->size; i++)
       f->queue[i-1] = f->queue[i];
     f->queue[f->size-1] = NULL;

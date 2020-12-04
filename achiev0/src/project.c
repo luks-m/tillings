@@ -21,7 +21,6 @@ static int seed = 0;
 //Global parameter, if it is 1 the program draws the board if it is 0 it doesn't
 static int draw = 0;
 
-////////////////////////////////////////////////////////////////
 // Function for parsing the options of the program
 // Currently available options are :
 // -s <seed> : sets the seed
@@ -63,8 +62,6 @@ void parse_opts(int argc, char* argv[]) {
   }
 }
 
-////////////////////////////////////////////////////////////////
-
 //transform a deck of deck_pair into a file with all the tiles
 void transform(struct deck d, struct file* f)
 {
@@ -73,6 +70,7 @@ void transform(struct deck d, struct file* f)
       push(f, d.cards[i].t);
 }
 
+//the first player places his first tile randomly on the board to start the game
 void first_tile(const struct tile* b[MAX_SIZE_BOARD][MAX_SIZE_BOARD], struct file f_hand[])
 {
   int first_player = 0;
@@ -120,6 +118,7 @@ int test_position(const struct tile* b[MAX_SIZE_BOARD][MAX_SIZE_BOARD], int x, i
   return (nb_not_empty_tile > 0); //testing the connectedness
 }
 
+//test if the tile can be placed on the board and place it if it is possible
 int tile_placement(const struct tile *t, const struct tile* board[MAX_SIZE_BOARD][MAX_SIZE_BOARD], int size)
 {
   for (int i = 0; i < size; i++)
@@ -131,6 +130,7 @@ int tile_placement(const struct tile *t, const struct tile* board[MAX_SIZE_BOARD
   return 0;
 }
 
+//show a representation on the board in the terminal
 void draw_board(const struct tile* board[MAX_SIZE_BOARD][MAX_SIZE_BOARD], int size)
 {
   struct color* c1;
@@ -157,8 +157,14 @@ void draw_board(const struct tile* board[MAX_SIZE_BOARD][MAX_SIZE_BOARD], int si
 
 int main(int argc,  char* argv[])
 {
+  //show the options of the game
+  parse_opts(argc, argv);
+  printf("Number of players : %d\n", nb_players);
+  printf("Size of the board : %d\n", board_size);
+  printf("Seed : %d\n", seed);
+  
   //Initialization of empty decks for the players
-  struct file deck_players[MAX_PLAYERS];//a tabular that represent the decks of the players
+  struct file deck_players[MAX_PLAYERS]; //a tabular that represents the decks of the players
   for (int i = 0 ; i < MAX_PLAYERS ; i++){
     deck_players[i].size = 0;
     for (int j = 0 ; j < MAX_SIZE_FILE ; j++)
@@ -170,13 +176,6 @@ int main(int argc,  char* argv[])
   for (int i = 0; i < MAX_SIZE_BOARD; i++)
     for (int j = 0; j < MAX_SIZE_BOARD; j++)
       board[i][j] = empty_tile();
-  
-  parse_opts(argc, argv);
-  printf("Number of players : %d\n", nb_players);
-  printf("Size of the board : %d\n", board_size);
-  printf("Seed : %d\n", seed);
-  
-  //Initialization of the game
 
   //Initialization of an empty deck_pair
   unsigned int n_init = 0;
@@ -205,24 +204,24 @@ int main(int argc,  char* argv[])
 
   distribute(&deck_file, deck_players, nb_players);	 
 
-  first_tile(board, deck_players); //the first player play and put his first tile on the board randomly
+  first_tile(board, deck_players);
 
   //Game loop
   int is_placed = 0;
   const struct tile *active_tile = empty_tile();
 
-  while (skip < nb_players) {
-    active_tile = pop(&deck_players[active_player]);
+  while (skip < nb_players) { //if all players skip, the game ends
+    active_tile = pop(&deck_players[active_player]); //the tile the active player is playing with
     is_placed = tile_placement(active_tile, board, board_size);
-    if (is_placed == 0) {
+    if (is_placed == 0) { //if the player cannot play, he skips and his tile goes at the end of his deck
       skip++;
       push(&deck_players[active_player], active_tile);
     }
-    else {
-      if (top(&deck_players[active_player]) == NULL)
+    else { //if he can play, there is two options...
+      if (top(&deck_players[active_player]) == NULL) //... his deck is empty after placing his tile, he wins
 	skip = nb_players;
       else
-	skip = 0;
+	skip = 0; //...his deck is not empty, the game keeps going continues with the next player
     }
     active_player = (active_player + 1) % nb_players;  //update the player
   }
@@ -246,7 +245,6 @@ int main(int argc,  char* argv[])
     draw_board(board, board_size);
     web_export(board);
   }
-   
-
+  
   return EXIT_SUCCESS;
 }
