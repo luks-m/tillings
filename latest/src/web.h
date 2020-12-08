@@ -6,6 +6,7 @@
 #include "board.h"
 
 #define BORDER_SIZE 8
+#define CELL_SIZE 20
 
 void web_export(struct board_cell b[MAX_SIZE_BOARD][MAX_SIZE_BOARD]);
 

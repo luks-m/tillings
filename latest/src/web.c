@@ -14,7 +14,7 @@ void web_export(struct board_cell b[MAX_SIZE_BOARD][MAX_SIZE_BOARD])
   fprintf(fd, "\t</head>\n");
   fprintf(fd, "\t<body>\n");
  
-  fprintf(fd, "\t\t<table style=\"border: solid 1px black;\">\n");
+  fprintf(fd, "\t\t<table style=\"border: solid 1px black; text-align: center;\">\n");
   for (unsigned y = 0; y < MAX_SIZE_BOARD; y++)
     {
       fprintf(fd, "\t\t\t<tr>\n");
@@ -24,7 +24,9 @@ void web_export(struct board_cell b[MAX_SIZE_BOARD][MAX_SIZE_BOARD])
             {
 	      fprintf(
 		      fd,
-		      "\t\t\t\t\t<td style=\"padding: 0; width: 0; height: 0; border-left: %dpx solid %s; border-right: %dpx solid %s; border-bottom: %dpx solid %s; border-top: %dpx solid %s;\">%d</td>\n",
+		      "\t\t\t\t\t<td style=\"padding: 0; width: %dpx; height: %dpx; border-left: %dpx solid %s; border-right: %dpx solid %s; border-bottom: %dpx solid %s; border-top: %dpx solid %s;\">%d</td>\n",
+			  CELL_SIZE,
+			  CELL_SIZE,
 		      BORDER_SIZE,
 		      color_name(tile_edge(tile(b,x,y), WEST)),
 		      BORDER_SIZE,
@@ -40,10 +42,9 @@ void web_export(struct board_cell b[MAX_SIZE_BOARD][MAX_SIZE_BOARD])
             {
 	      fprintf(
 		      fd,
-		      "\t\t\t\t\t<td style=\"padding: 0; width: 0; height: 0; border-left: %dpx solid transparent; border-right: %dpx solid transparent; border-bottom: %dpx solid transparent; border-top: %dpx solid transparent;\"></td>\n",
-		      BORDER_SIZE,
-		      BORDER_SIZE,
-		      BORDER_SIZE,
+		      "\t\t\t\t\t<td style=\"padding: 0; width: %dpx; height: %dpx; border-left: %dpx solid transparent;\"></td>\n",
+			  CELL_SIZE,
+			  CELL_SIZE,
 		      BORDER_SIZE
 		      );
             }
