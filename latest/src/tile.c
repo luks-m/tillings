@@ -3,6 +3,7 @@
 #include "tile.h"
 
 #define DECK_SIZE 20 //the number of deck_pair in the initial deck
+#define N (MAX_DECK_SIZE/DECK_SIZE) //number of tiles per pair
 
 
 struct tile {
@@ -43,13 +44,11 @@ struct color* tile_edge(const struct tile* t, enum direction d)
 
 struct tile tiles[DECK_SIZE] = {};
 
-const int n = MAX_DECK_SIZE / DECK_SIZE; //number of tiles in a pair
-
 const int tile_number[DECK_SIZE] = {
-			      n, n, n, n, n,
-			      n, n, n, n, n,
-			      n, n, n, n, n,
-			      n, n, n, n, n, 								  
+			      N, N, N, N, N,
+			      N, N, N, N, N,
+			      N, N, N, N, N,
+			      N, N, N, N, N, 								  
 };
 
 // A function that fills a deck with tiles
