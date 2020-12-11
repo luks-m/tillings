@@ -1,6 +1,6 @@
 ______To compile and create the executable "project" :______
 
-1 - Go to a repertory refering to the achievement that you want :
+1 - Go to a folder refering to the achievement that you want :
    Example : "cd achiev0"
    
 2 - Then use the "make" command
@@ -30,7 +30,7 @@ ______After the game :______
 
 1 - You can launch another game with the same executable "project"
 
-2 - You can clean the repertory with the command "make clean"
+2 - You can clean the folder with the command "make clean"
 
 
 ______Additional :______
