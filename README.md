@@ -1,9 +1,9 @@
 # To compile and create the executable "project" :
 
 1 - Go to a folder refering to the achievement that you want :
-   Example : "cd achiev0"
+   Example : `cd achiev0`
    
-2 - Then use the "make" command
+2 - Then use the `make` command
 
 
 # To launch a game :
