@@ -8,7 +8,7 @@
 
 # To launch a game :
 
-1 - Execute the project with "./project"
+1 - Execute the project with `./project`
 
 2 - You can add options before executing :
 
@@ -30,9 +30,9 @@ a seed of 156, and will show the board in a graphic interface after the game
 
 1 - You can launch another game with the same executable "project"
 
-2 - You can clean the folder with the command "make clean"
+2 - You can clean the folder with the command `make clean`
 
 
 # Additional :
 
-1 - To verify the functions of the project, you can use the command "make test" which compile and execute several tests
+1 - To verify the functions of the project, you can use the command `make test` which compile and execute several tests
