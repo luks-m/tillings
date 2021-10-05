@@ -1,4 +1,4 @@
-______To compile and create the executable "project" :______
+# To compile and create the executable "project" :
 
 1 - Go to a folder refering to the achievement that you want :
    Example : "cd achiev0"
@@ -6,7 +6,7 @@ ______To compile and create the executable "project" :______
 2 - Then use the "make" command
 
 
-______To launch a game :______
+# To launch a game :
 
 1 - Execute the project with "./project"
 
@@ -26,13 +26,13 @@ Example :
 	a seed of 156, and will show the board in a graphic interface after the game
 	
 
-______After the game :______
+# After the game :
 
 1 - You can launch another game with the same executable "project"
 
 2 - You can clean the folder with the command "make clean"
 
 
-______Additional :______
+# Additional :
 
 1 - To verify the functions of the project, you can use the command "make test" which compile and execute several tests
