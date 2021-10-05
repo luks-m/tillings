@@ -12,14 +12,14 @@
 
 2 - You can add options before executing :
 
-    	"-d 1" if you want to have a graphic interface after the game (a file named "output.html"
+    	`-d 1` if you want to have a graphic interface after the game (a file named "output.html"
 	    is created, you can open it with your browser); default value is 0
 	
-	"-n X" to settle the number of players to X (between 2 and 20) ; default value is 2
+	`-n X` to settle the number of players to X (between 2 and 20) ; default value is 2
 	
-	"-b X" to settle the size of the board to X*X (the maximum is 50) ; default value is 10
+	`-b X` to settle the size of the board to X*X (the maximum is 50) ; default value is 10
 	
-	"-s X" to settle a new seed changing the course of the game ; default value is 0
+	`-s X` to settle a new seed changing the course of the game ; default value is 0
 
 Example :
 	"./project -d 1 -n 15 -s 156" launch a game with 15 players, a board size of 10*10,
